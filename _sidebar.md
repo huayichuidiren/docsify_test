@@ -9,7 +9,7 @@
 
 - AB实验相关论文
 
-  - [无效实验自动化诊断](docsify_test/How AB Tests Could Go Wrong Automatic Diagnosis of Invalid Online Experiments.md)
+  - [无效实验自动化诊断](docsify_test/auto_diagnose.md)
   - [主题](zh-cn/themes.md)
   - [插件列表](zh-cn/plugins.md)
   - [开发插件](zh-cn/write-a-plugin.md)
