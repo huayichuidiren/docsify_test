@@ -2,7 +2,7 @@
 
 - 入门
 
-  - [快速开始](zh-cn/quickstart.md)
+  - [快速开始](docsify_test/README.md)
   - [添加页面](zh-cn/adding-pages.md)
   - [封面](zh-cn/cover.md)
   - [定制导航栏](zh-cn/custom-navbar.md)
