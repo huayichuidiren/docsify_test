@@ -7,9 +7,9 @@
   - [封面](zh-cn/cover.md)
   - [定制导航栏](zh-cn/custom-navbar.md)
 
-- 定制化
+- AB实验相关论文
 
-  - [配置项](zh-cn/configuration.md)
+  - [无效实验自动化诊断](How AB Tests Could Go Wrong Automatic Diagnosis of Invalid Online Experiments.md)
   - [主题](zh-cn/themes.md)
   - [插件列表](zh-cn/plugins.md)
   - [开发插件](zh-cn/write-a-plugin.md)
