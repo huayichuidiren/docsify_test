@@ -2,14 +2,14 @@
 
 - 入门
 
-  - [快速开始](docsify_test/README.md)
+  - [快速开始](README.md)
   - [添加页面](zh-cn/adding-pages.md)
   - [封面](zh-cn/cover.md)
   - [定制导航栏](zh-cn/custom-navbar.md)
 
 - AB实验相关论文
 
-  - [无效实验自动化诊断](docsify_test/auto_diagnose.md)
+  - [无效实验自动化诊断](auto_diagnose.md)
   - [主题](zh-cn/themes.md)
   - [插件列表](zh-cn/plugins.md)
   - [开发插件](zh-cn/write-a-plugin.md)
