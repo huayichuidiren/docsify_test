@@ -7,7 +7,7 @@ How A/B Tests Could Go Wrong: Automatic Diagnosis of Invalid Online Experiments
 
 「实验无效」可以分为两种：「内部无效」和「外部无效」
 
-- 「内部无效」（internal invalidity）指样本不可比（incomparable samples），可能的原因比如「样本选择偏差」或「混淆变量」的影响
+- 「内部无效」（internal invalidity）指除干预外还有别的东西影响指标。一个常见的问题是样本不可比（incomparable samples），可能的原因比如「样本选择偏差」或「混淆变量」的影响
   - 「内部无效性」将带来实验结果的偏差
   - 在分析大量的「有偏实验」后，本研究总结分类出了多种「内部无效性」的类型
 - 「外部无效」
@@ -31,3 +31,20 @@ How A/B Tests Could Go Wrong: Automatic Diagnosis of Invalid Online Experiments
 那些没有接触到实验的用户实际上是“噪音”。
 
 触发实验有多种类型，比如「session- triggering」和「user- triggering」
+
+触发分析可以节约实验所需的样本量。为什么呢？因为触发分析中我们关注的「人群」变化了。原来我们关注「大盘」人群，比如「开端用户」（即app活跃用户）。但如果我们使用「触发分析」而把**关注的人群**缩小至「触发人群」上（真正接受到策略的用户），就可以节约样本量。
+
+
+
+## 内部无效性
+
+「在线ab实验」评估结果的「内部无效性」一般来自两个原因：不满足SUTVA假设和不满足unconfoundness假设。
+
+
+
+「在线ab实验」和「传统随机实验」一个很大的不同是，后者的样本事先准备好，而前者的样本依赖于动态收集（用户**随时间推移**陆续触发实验，从而收集样本）。
+
+> samples in online experiments are usually collected sequentially over time as users trigger into the experiment by visiting the affected part of the site.
+>
+> ——**How A/B Tests Could Go Wrong: Automatic Diagnosis of Invalid Online Experiments**
+
