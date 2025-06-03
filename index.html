@@ -179,7 +179,27 @@
             nextText: '下一章节',
             crossChapter: true,
             crossChapterText: true,
-          }
+          },
+        plugins: [
+        function (hook, vm) {
+          // load livere
+          hook.beforeEach(function(content) {
+              var comment = "<div id='lv-container' data-id='city' data-uid='MTAyMC82MDcwNC8zNzE3NQ=='></div>\n\n----\n"
+              return content + comment;
+          });
+
+          hook.doneEach(function() {
+             (function(d, s) {
+                 var j, e = d.getElementsByTagName(s)[0];
+                 if (typeof LivereTower === 'function') { return; }
+                 j = d.createElement(s);
+                 j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                 j.async = true;
+                 e.parentNode.insertBefore(j, e);
+             })(document, 'script');
+          });
+        }
+      ]
     }
 
     // 检查是否是受保护页面
