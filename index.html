@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>pyy的数据科学笔记</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <!-- Theme: Vue -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
   <style>
     .logout-button {
       position: fixed;
@@ -130,33 +133,53 @@
     </div>
   </div>
 
+  <!-- KaTeX -->
+  <script src="//cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
   <script>
     window.$docsify = {
-      coverpage: true,
       name: 'pyy的数据科学笔记',
       repo: '',
       loadSidebar: true,
       loadNavbar: true,
-      onlyContent: true,
       subMaxLevel: 2,
-      styles: [
-        `.cover {
-          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-          color: #fff;
-        }
-        .cover h1 {
-          font-size: 3rem;
-          letter-spacing: -1px;
-        }
-        .cover p {
-          font-size: 1.2rem;
-          opacity: 0.9;
-        }
-        .cover .highlight {
-          color: #f6d365;
-          font-weight: 600;
-        }`
-      ]
+      coverpage: true,
+      notFoundPage: true,
+      auto2top: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/.*/_navbar.md': '/_navbar.md'
+      },
+      nameLink: {
+        '/': '#/'
+      },
+      basePath: '/',
+      relativePath: false,
+      fallbackLanguages: ['zh-cn'],
+      latex: {
+          inlineMath   : [['$', '$'], ['\\(', '\\)']], // default
+          displayMath  : [['$$', '$$']],               // default
+        },
+      count:{
+            countable:true,
+            fontsize:'0.9em',
+            color:'rgb(90,90,90)',
+            language:'chinese'
+            },
+      share: {
+            reddit: true,
+            linkedin: true,
+            facebook: true,
+            twitter: true,
+            whatsapp: true,
+            telegram: true,
+        },
+        pagination: {
+            previousText: '上一章节',
+            nextText: '下一章节',
+            crossChapter: true,
+            crossChapterText: true,
+          }
     }
 
     // 检查是否是受保护页面
@@ -234,7 +257,6 @@
       }
     }
 
-    // 检查登录状态
     function checkLoginStatus() {
       const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
       const logoutButton = document.getElementById('logoutButton');
@@ -283,5 +305,15 @@
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- docsify的js依赖 -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script> -->
+  <!-- 字数插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-count@latest/dist/countable.min.js"></script>
+  <!-- docsify-katex -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-latex@0"></script>
+  <!-- docsify-share -->
+  <script src="//unpkg.com/docsify-share/build/index.min.js"></script>
+  <!-- docsify-pagination -->
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 </body>
 </html>
