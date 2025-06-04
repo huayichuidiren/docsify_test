@@ -117,6 +117,175 @@
         transform: translateY(0);
       }
     }
+
+    /* 评论区样式 */
+    .comment-section {
+      margin-top: 50px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #eaecef;
+      max-width: 950px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .comment-section::before {
+      content: '评论区';
+      display: block;
+      font-size: 1.2em;
+      font-weight: 500;
+      color: #42b983;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eaecef;
+    }
+
+    #vcomments {
+      margin-top: 20px;
+    }
+
+    /* Valine 自定义样式 */
+    .v[data-class=v] .vwrap {
+      border: 1px solid #e8f3ef;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #f8fdfb;
+      max-width: 100%;
+    }
+
+    .v[data-class=v] .vwrap .vheader .vinput {
+      border: 1px solid #e8f3ef;
+      border-radius: 4px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    .v[data-class=v] .vwrap .vheader {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .v[data-class=v] .vwrap .vheader .vinput {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .v[data-class=v] .vwrap .vheader .vinput:focus {
+      border-color: #42b983;
+      box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.1);
+    }
+
+    .v[data-class=v] .vimg {
+      border-radius: 4px;
+      border: 1px solid #e8f3ef;
+      padding: 2px;
+      background: #fff;
+    }
+
+    /* 恢复邮箱输入框 */
+    .v[data-class=v] .vheader .vinput[type="email"] {
+      display: block !important;
+    }
+
+    /* 优化昵称输入框 */
+    .v[data-class=v] .vheader .vinput[type="text"] {
+      font-size: 14px;
+      background: #f8fdfb;
+    }
+
+    .v[data-class=v] .vheader .vinput[type="text"]:focus {
+      background: #fff;
+    }
+
+    /* 添加输入提示样式 */
+    .v[data-class=v] .vheader .vinput[type="text"]::placeholder {
+      color: #8e9daa;
+      font-size: 13px;
+    }
+
+    /* 去除多余的灰线 */
+    .v[data-class=v] .vline {
+      display: none;
+    }
+
+    .v[data-class=v] hr {
+      display: none;
+    }
+
+    /* 优化评论文字区域 */
+    .v[data-class=v] .veditor {
+      border: 1px solid #e8f3ef;
+      border-radius: 4px;
+      padding: 12px;
+      min-height: 100px;
+      transition: all 0.3s ease;
+      background: #fff;
+    }
+
+    .v[data-class=v] .veditor:focus {
+      border-color: #42b983;
+      box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.1);
+    }
+
+    /* 优化计数器样式 */
+    .v[data-class=v] .vcount {
+      color: #42b983;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    /* 优化评论内容样式 */
+    .v[data-class=v] .vcontent {
+      padding: 10px 0;
+      color: #24292e;
+    }
+
+    /* 优化回复按钮 */
+    .v[data-class=v] .vat {
+      color: #42b983;
+      border: 1px solid #42b983;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .v[data-class=v] .vat:hover {
+      color: #fff;
+      background: #42b983;
+    }
+
+    /* 适配暗色主题 */
+    .dark-theme .comment-section {
+      background: #2d2d2d;
+      border-color: #3e3e3e;
+    }
+
+    .dark-theme .v[data-class=v] .vwrap,
+    .dark-theme .v[data-class=v] .vcard {
+      background: #363636;
+      border-color: #3e3e3e;
+    }
+
+    .dark-theme .v[data-class=v] .veditor,
+    .dark-theme .v[data-class=v] .vinput {
+      background: #2d2d2d;
+      border-color: #3e3e3e;
+      color: #fff;
+    }
+
+    /* 评论区响应式设计 */
+    @media screen and (max-width: 768px) {
+      .comment-section {
+        margin-top: 30px;
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -133,10 +302,22 @@
     </div>
   </div>
 
-  <!-- KaTeX -->
-  <script src="//cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <!-- Valine 依赖 -->
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 
   <script>
+    // 添加默认头像数组
+    const defaultAvatars = [
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=1&backgroundColor=42b983',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=2&backgroundColor=ffb84d',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=3&backgroundColor=ff6b6b',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=4&backgroundColor=4d96ff',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=5&backgroundColor=9775fa',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=6&backgroundColor=748ffc',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=7&backgroundColor=51cf66',
+      'https://api.dicebear.com/7.x/thumbs/svg?seed=8&backgroundColor=ffd43b'
+    ];
+
     window.$docsify = {
       name: 'pyy的数据科学笔记',
       repo: '',
@@ -144,8 +325,6 @@
       loadNavbar: true,
       subMaxLevel: 2,
       coverpage: true,
-      notFoundPage: true,
-      auto2top: true,
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md',
         '/.*/_navbar.md': '/_navbar.md'
@@ -157,180 +336,75 @@
       relativePath: false,
       fallbackLanguages: ['zh-cn'],
       latex: {
-          inlineMath   : [['$', '$'], ['\\(', '\\)']], // default
-          displayMath  : [['$$', '$$']],               // default
-        },
-      count:{
-            countable:true,
-            fontsize:'0.9em',
-            color:'rgb(90,90,90)',
-            language:'chinese'
-            },
-      share: {
-            reddit: true,
-            linkedin: true,
-            facebook: true,
-            twitter: true,
-            whatsapp: true,
-            telegram: true,
-        },
-        pagination: {
-            previousText: '上一章节',
-            nextText: '下一章节',
-            crossChapter: true,
-            crossChapterText: true,
-          },
-        plugins: [
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$']]
+      },
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese'
+      },
+      plugins: [
         function (hook, vm) {
-          // load livere
           hook.beforeEach(function(content) {
-              var comment = "<div id='lv-container' data-id='city' data-uid='MTAyMC82MDcwNC8zNzE3NQ=='></div>\n\n----\n"
-              return content + comment;
+            var comment = "\n\n<div class='comment-section'><div id='vcomments'></div></div>\n\n----\n";
+            return content + comment;
           });
 
           hook.doneEach(function() {
-             (function(d, s) {
-                 var j, e = d.getElementsByTagName(s)[0];
-                 if (typeof LivereTower === 'function') { return; }
-                 j = d.createElement(s);
-                 j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-                 j.async = true;
-                 e.parentNode.insertBefore(j, e);
-             })(document, 'script');
+            // 初始化 Valine
+            new Valine({
+              el: '#vcomments',
+              appId: 'XuzlqJ6qONxOB20IGM1bLjp0-gzGzoHsz',
+              appKey: 'LhAc7aBKwyeOBxsEyqKcCaDW',
+              placeholder: '说点什么吧...',
+              avatar: 'mp',    // 使用默认的 Gravatar Mystery Person
+              meta: ['nick', 'mail'],  // 恢复邮箱输入
+              requiredFields: ['nick'],
+              lang: 'zh-CN',
+              visitor: false,
+              highlight: true,
+              avatarForce: true,
+              recordIP: false,
+              enableQQ: true,
+              region: 'cn-n1',
+              path: window.location.pathname,
+              emojiCDN: '//i0.hdslb.com/bfs/emote/',
+              emojiMaps: {
+                "tv_doge": "6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
+                "tv_亲亲": "a8111ad55953ef5e3be3327ef94eb4a39d535d06.png",
+                "tv_偷笑": "bb690d4107620f1c15cff29509db529a73aee261.png",
+                "tv_再见": "180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png",
+                "tv_冷漠": "b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
+                "tv_发怒": "34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
+                "tv_思考": "90cf159733e558137ed20aa04d09964436f618a1.png",
+                "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png"
+              }
+            });
+
+            // 优化评论框样式
+            const commentInput = document.querySelector('.v[data-class=v] .vinput[type="text"]');
+            if (commentInput) {
+              commentInput.setAttribute('maxlength', '20');
+              commentInput.setAttribute('placeholder', '昵称');
+            }
+            const emailInput = document.querySelector('.v[data-class=v] .vinput[type="email"]');
+            if (emailInput) {
+              emailInput.setAttribute('placeholder', '邮箱');
+            }
           });
         }
       ]
-    }
-
-    // 检查是否是受保护页面
-    function isProtectedPage() {
-      const currentPath = window.location.hash.slice(1);
-      if (!currentPath || currentPath === '/' || currentPath === '/README' || currentPath === '/README.md') {
-        return false;
-      }
-      return currentPath.includes('auto_diagnose');
-    }
-
-    function showLoginModal() {
-      const modal = document.getElementById('loginModal');
-      modal.style.display = 'block';
-      setTimeout(() => {
-        modal.classList.add('show');
-      }, 10);
-    }
-
-    function hideLoginModal() {
-      const modal = document.getElementById('loginModal');
-      modal.classList.remove('show');
-      setTimeout(() => {
-        modal.style.display = 'none';
-      }, 300);
-    }
-
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      if (username === 'admin' && password === 'password123') {
-        localStorage.setItem('isLoggedIn', 'true');
-        hideLoginModal();
-        showProtectedContent();
-      } else {
-        alert('用户名或密码错误！');
-      }
-    }
-
-    function showProtectedContent() {
-      if (!isProtectedPage()) return;
-      
-      const protectedElements = document.getElementsByClassName('protected-content');
-      const loginNotice = document.getElementsByClassName('login-notice')[0];
-      
-      if (loginNotice) {
-        loginNotice.style.display = 'none';
-      }
-      
-      for (let element of protectedElements) {
-        element.style.display = 'block';
-        element.style.animation = 'fadeInUp 0.5s ease';
-      }
-      
-      const logoutButton = document.getElementById('logoutButton');
-      logoutButton.classList.add('show');
-    }
-
-    function logout() {
-      localStorage.removeItem('isLoggedIn');
-      const logoutButton = document.getElementById('logoutButton');
-      logoutButton.classList.remove('show');
-      
-      if (isProtectedPage()) {
-        const protectedElements = document.getElementsByClassName('protected-content');
-        for (let element of protectedElements) {
-          element.style.display = 'none';
-        }
-        
-        const loginNotice = document.getElementsByClassName('login-notice')[0];
-        if (loginNotice) {
-          loginNotice.style.display = 'block';
-        }
-      }
-    }
-
-    function checkLoginStatus() {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      const logoutButton = document.getElementById('logoutButton');
-      
-      if (!isProtectedPage()) {
-        const loginNotice = document.getElementsByClassName('login-notice')[0];
-        if (loginNotice) {
-          loginNotice.style.display = 'none';
-        }
-        if (isLoggedIn) {
-          logoutButton.classList.add('show');
-        } else {
-          logoutButton.classList.remove('show');
-        }
-        return;
-      }
-      
-      if (!isLoggedIn) {
-        const loginNotice = document.getElementsByClassName('login-notice')[0];
-        if (loginNotice) {
-          loginNotice.style.display = 'block';
-        }
-        
-        const protectedElements = document.getElementsByClassName('protected-content');
-        for (let element of protectedElements) {
-          element.style.display = 'none';
-        }
-        logoutButton.classList.remove('show');
-      } else {
-        showProtectedContent();
-        logoutButton.classList.add('show');
-      }
-    }
-
-    // 添加点击事件监听器
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('.login-notice')) {
-        showLoginModal();
-      }
-    });
-
-    // 初始化
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(checkLoginStatus, 100);
-    });
+    };
   </script>
+
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <!-- docsify的js依赖 -->
-  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script> -->
-  <!-- 字数插件 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify-count@latest/dist/countable.min.js"></script>
-  <!-- docsify-katex -->
   <script src="//cdn.jsdelivr.net/npm/docsify-latex@0"></script>
+  <!-- 字数统计插件 -->
+  <script src="//unpkg.com/docsify-count/dist/countable.min.js"></script>
   <!-- docsify-share -->
   <script src="//unpkg.com/docsify-share/build/index.min.js"></script>
   <!-- docsify-pagination -->
