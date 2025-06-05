@@ -9,8 +9,54 @@
   <!-- Theme: Vue -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <!-- KaTeX -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
   <style>
+    /* 退出登录按钮样式 */
+    #logoutButton {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      padding: 8px 15px;
+      background: rgba(66, 185, 131, 0.1);
+      color: #42b983;
+      border: 1px solid #42b983;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      display: none;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    #logoutButton:hover {
+      background: rgba(66, 185, 131, 0.2);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(66, 185, 131, 0.2);
+    }
+
+    #logoutButton:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    #logoutButton.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .logout-button {
       position: fixed;
       top: 10px;
@@ -51,42 +97,43 @@
     }
     .login-modal.show {
       opacity: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .login-form {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      min-width: 300px;
-      opacity: 0;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(66, 185, 131, 0.15);
+      min-width: 320px;
+      transform: translateY(-20px);
       transition: all 0.3s ease;
     }
     .login-modal.show .login-form {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 1;
+      transform: translateY(0);
     }
     .login-form h2 {
       margin: 0 0 20px;
-      color: #333;
+      color: #42b983;
       text-align: center;
+      font-size: 1.5em;
+      font-weight: 500;
     }
     .login-form input {
       display: block;
       width: 100%;
       margin: 10px 0;
       padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      border: 1px solid #e8f3ef;
+      border-radius: 4px;
       font-size: 14px;
-      transition: border-color 0.3s;
+      background: #f8fdfb;
     }
     .login-form input:focus {
       border-color: #42b983;
       outline: none;
+      box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.1);
     }
     .login-form button {
       width: 100%;
@@ -94,11 +141,11 @@
       background: #42b983;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
       font-size: 16px;
       margin-top: 20px;
-      transition: background 0.3s;
+      transition: all 0.3s ease;
     }
     .login-form button:hover {
       background: #3aa876;
@@ -120,8 +167,9 @@
 
     /* 评论区样式 */
     .comment-section {
-      margin-top: 50px;
-      padding: 20px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      padding: 15px;
       background: #fff;
       border-radius: 8px;
       border: 1px solid #eaecef;
@@ -133,131 +181,115 @@
     .comment-section::before {
       content: '评论区';
       display: block;
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: 500;
       color: #42b983;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 8px;
       border-bottom: 1px solid #eaecef;
     }
 
     #vcomments {
-      margin-top: 20px;
+      margin-top: 5px;
+      margin-bottom: 2px;
+      max-height: 320px;
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* Valine 自定义样式 */
     .v[data-class=v] .vwrap {
       border: 1px solid #e8f3ef;
       border-radius: 4px;
-      padding: 15px;
-      margin-bottom: 15px;
+      padding: 0px;
+      margin-bottom: 8px;
       background: #f8fdfb;
       max-width: 100%;
     }
 
-    .v[data-class=v] .vwrap .vheader .vinput {
-      border: 1px solid #e8f3ef;
-      border-radius: 4px;
-      padding: 8px 12px;
-      transition: all 0.3s ease;
-      margin-bottom: 10px;
-    }
-
-    .v[data-class=v] .vwrap .vheader {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .v[data-class=v] .vwrap .vheader .vinput {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .v[data-class=v] .vwrap .vheader .vinput:focus {
-      border-color: #42b983;
-      box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.1);
-    }
-
-    .v[data-class=v] .vimg {
-      border-radius: 4px;
-      border: 1px solid #e8f3ef;
-      padding: 2px;
-      background: #fff;
-    }
-
-    /* 恢复邮箱输入框 */
-    .v[data-class=v] .vheader .vinput[type="email"] {
-      display: block !important;
-    }
-
-    /* 优化昵称输入框 */
-    .v[data-class=v] .vheader .vinput[type="text"] {
-      font-size: 14px;
-      background: #f8fdfb;
-    }
-
-    .v[data-class=v] .vheader .vinput[type="text"]:focus {
-      background: #fff;
-    }
-
-    /* 添加输入提示样式 */
-    .v[data-class=v] .vheader .vinput[type="text"]::placeholder {
-      color: #8e9daa;
-      font-size: 13px;
-    }
-
-    /* 去除多余的灰线 */
-    .v[data-class=v] .vline {
-      display: none;
-    }
-
-    .v[data-class=v] hr {
-      display: none;
-    }
-
-    /* 优化评论文字区域 */
     .v[data-class=v] .veditor {
+      min-height: 65px;
+      max-height: 65px;
+      padding: 8px 12px;
+      background: #fff;
       border: 1px solid #e8f3ef;
       border-radius: 4px;
-      padding: 12px;
-      min-height: 100px;
-      transition: all 0.3s ease;
-      background: #fff;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      resize: none;
+      overflow-y: auto;
     }
 
-    .v[data-class=v] .veditor:focus {
-      border-color: #42b983;
-      box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.1);
+    .v[data-class=v] .vrow {
+      margin-bottom: 8px;
     }
 
-    /* 优化计数器样式 */
+    .v[data-class=v] .vheader {
+      margin-bottom: -10px;
+    }
+
     .v[data-class=v] .vcount {
-      color: #42b983;
+      margin-top: 20px;
+      margin-bottom: -10px;
+      padding: 3px 0;
       font-weight: 600;
-      margin-bottom: 15px;
-    }
-
-    /* 优化评论内容样式 */
-    .v[data-class=v] .vcontent {
-      padding: 10px 0;
-      color: #24292e;
-    }
-
-    /* 优化回复按钮 */
-    .v[data-class=v] .vat {
+      font-size: 1.1em;
       color: #42b983;
+    }
+
+    .v[data-class=v] .vsubmit {
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+
+    /* 评论列表样式 */
+    .v[data-class=v] .vcards {
+      margin-top: 10px;
+    }
+
+    .v[data-class=v] .vcard {
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f8fdfb;
+      border: 1px solid #e8f3ef;
+      border-radius: 4px;
+    }
+
+    /* 登录按钮样式 */
+    .v[data-class=v] .vlogin-btn {
+      color: #42b983;
+      padding: 6px 12px;
       border: 1px solid #42b983;
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-size: 12px;
-      background: transparent;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #fff;
+      margin: 5px 0;
+      display: inline-block;
+    }
+
+    .v[data-class=v] .vlogin-btn:hover {
+      background: #f0f7f4;
+    }
+
+    /* 登录模块样式优化 */
+    .v[data-class=v] .vlogin-info {
+      color: #42b983;
+      padding: 6px 12px;
+      border: 1px solid #42b983;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #fff;
+      margin: 5px 0;
+      display: inline-block;
       transition: all 0.3s ease;
     }
 
-    .v[data-class=v] .vat:hover {
-      color: #fff;
-      background: #42b983;
+    .v[data-class=v] .vlogin-info:hover {
+      background: #f0f7f4;
+      border-color: #3aa876;
     }
 
     /* 适配暗色主题 */
@@ -286,12 +318,44 @@
         padding: 15px;
       }
     }
+
+    /* 登录提示样式 */
+    .login-notice {
+      display: block;
+      padding: 20px;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-notice:hover {
+      background: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .login-notice .emoji {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .login-notice .text {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
   <div id="app"></div>
-  <button class="logout-button" id="logoutButton" onclick="logout()">退出登录</button>
   
+  <!-- 退出登录按钮 -->
+  <button id="logoutButton" onclick="logout()">退出登录</button>
+
   <!-- 登录模态框 -->
   <div class="login-modal" id="loginModal">
     <div class="login-form">
@@ -347,29 +411,49 @@
       },
       plugins: [
         function (hook, vm) {
+          // 将评论区移到分页导航之后
           hook.beforeEach(function(content) {
-            var comment = "\n\n<div class='comment-section'><div id='vcomments'></div></div>\n\n----\n";
-            return content + comment;
+            // 检查是否包含登录提示块
+            if (content.includes('<div class="login-notice"')) {
+              // 将登录提示块转换为可点击的版本
+              content = content.replace(
+                /<div class="login-notice".*?<\/div>\s*<\/div>/s,
+                `<div class="login-notice" onclick="showLoginModal()">
+                  <div class="emoji">🔒</div>
+                  <div class="text">请登录</div>
+                </div>`
+              );
+            }
+            return content;
+          });
+
+          hook.afterEach(function(html, next) {
+            // 添加评论区到分页导航之后，使用当前页面路径作为唯一标识
+            var comment = "<div class='comment-section'><div id='vcomments'></div></div>";
+            next(html + comment);
           });
 
           hook.doneEach(function() {
-            // 初始化 Valine
+            
+
+            // 初始化 Valine，使用当前页面的完整路径作为唯一标识
             new Valine({
               el: '#vcomments',
               appId: 'XuzlqJ6qONxOB20IGM1bLjp0-gzGzoHsz',
               appKey: 'LhAc7aBKwyeOBxsEyqKcCaDW',
               placeholder: '说点什么吧...',
-              avatar: 'mp',    // 使用默认的 Gravatar Mystery Person
-              meta: ['nick', 'mail'],  // 恢复邮箱输入
+              avatar: 'monsterid',
+              avatar_cdn: 'https://cravatar.cn/avatar/',
+              meta: ['nick', 'mail'],
               requiredFields: ['nick'],
               lang: 'zh-CN',
               visitor: false,
               highlight: true,
               avatarForce: true,
-              recordIP: false,
+              recordIP: true,
               enableQQ: true,
               region: 'cn-n1',
-              path: window.location.pathname,
+              path: window.location.pathname + window.location.hash, // 使用完整路径作为唯一标识
               emojiCDN: '//i0.hdslb.com/bfs/emote/',
               emojiMaps: {
                 "tv_doge": "6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
@@ -379,7 +463,19 @@
                 "tv_冷漠": "b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
                 "tv_发怒": "34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
                 "tv_思考": "90cf159733e558137ed20aa04d09964436f618a1.png",
-                "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png"
+                "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png",
+                "tv_白眼": "c1d59f439e379ee50eef488bcb5e5378e5044ea4.png",
+                "tv_难过": "87f46748d3f142ebc6586ff58860d0e2fc8263ba.png",
+                "tv_害羞": "a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png",
+                "tv_睡着": "8b196675b53af58264f383c50ad0945048290b33.png",
+                "tv_笑哭": "1abc628f6d4f4caf9d0e7800878f4697abbc8273.png",
+                "tv_馋": "fc7e829b845c43c623c8b490ee3602b7f0e76a31.png",
+                "tv_可爱": "9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png",
+                "tv_流泪": "7e71cde7858f0cd50d74b0264aa26db612a8a167.png",
+                "tv_大哭": "23269aeb35f99daee28dda129676f6e9ea87934f.png",
+                "tv_呆": "33ad6000d9f9f168a0976bc60937786f239e5d8c.png",
+                "tv_点赞": "f85c354995bd99e28fc76c869bfe42ba6438eff4.png",
+                "tv_生气": "26702dcafdab5e8225b43ffd23c94ac1ff932654.png"
               }
             });
 
@@ -393,21 +489,141 @@
             if (emailInput) {
               emailInput.setAttribute('placeholder', '邮箱');
             }
+
+            // 初始化 Valine 后设置登录事件
+            setTimeout(() => {
+              const loginInfoElements = document.querySelectorAll('.v[data-class=v] .vlogin-info');
+              loginInfoElements.forEach(element => {
+                // 移除可能存在的旧事件监听器
+                element.replaceWith(element.cloneNode(true));
+                const newElement = document.querySelector('.v[data-class=v] .vlogin-info');
+                if (newElement) {
+                  newElement.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const loginModal = document.getElementById('loginModal');
+                    if (loginModal) {
+                      loginModal.classList.add('show');
+                    }
+                  });
+                }
+              });
+            }, 1000);
+
+            // 为所有登录提示添加点击事件
+            const loginNotices = document.querySelectorAll('.login-notice');
+            loginNotices.forEach(notice => {
+              notice.addEventListener('click', function() {
+                showLoginModal();
+              });
+            });
           });
         }
       ]
     };
+
+    // 显示登录模态框
+    function showLoginModal() {
+      const loginModal = document.getElementById('loginModal');
+      if (loginModal) {
+        loginModal.classList.add('show');
+      }
+    }
+
+    // 登录函数
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // 这里添加实际的登录逻辑
+      console.log('Login attempt:', username);
+      
+      // 登录成功后
+      const loginModal = document.getElementById('loginModal');
+      if (loginModal) {
+        loginModal.classList.remove('show');
+      }
+
+      // 显示退出登录按钮
+      const logoutButton = document.getElementById('logoutButton');
+      if (logoutButton) {
+        logoutButton.classList.add('show');
+      }
+
+      // 显示受保护的内容
+      document.querySelectorAll('.protected-content').forEach(el => {
+        el.style.display = 'block';
+      });
+      
+      // 隐藏登录提示
+      document.querySelectorAll('.login-notice').forEach(el => {
+        el.style.display = 'none';
+      });
+
+      // 存储登录状态
+      localStorage.setItem('isLoggedIn', 'true');
+    }
+
+    // 退出登录函数
+    function logout() {
+      // 隐藏退出按钮
+      const logoutButton = document.getElementById('logoutButton');
+      if (logoutButton) {
+        logoutButton.classList.remove('show');
+      }
+
+      // 隐藏受保护的内容
+      document.querySelectorAll('.protected-content').forEach(el => {
+        el.style.display = 'none';
+      });
+
+      // 显示登录提示
+      document.querySelectorAll('.login-notice').forEach(el => {
+        el.style.display = 'block';
+      });
+
+      // 清除登录状态
+      localStorage.removeItem('isLoggedIn');
+    }
+
+    // 检查登录状态
+    document.addEventListener('DOMContentLoaded', function() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      if (isLoggedIn) {
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+          logoutButton.classList.add('show');
+        }
+        document.querySelectorAll('.protected-content').forEach(el => {
+          el.style.display = 'block';
+        });
+        document.querySelectorAll('.login-notice').forEach(el => {
+          el.style.display = 'none';
+        });
+      }
+    });
   </script>
 
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <!-- docsify的js依赖 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-latex@0"></script>
+
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify-latex@0"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
+  <script src="//cdn.jsdelivr.net/npm/marked@4"></script>
+
+  <!-- CDN files for docsify-katex -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+  <!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
+
+
   <!-- 字数统计插件 -->
   <script src="//unpkg.com/docsify-count/dist/countable.min.js"></script>
   <!-- docsify-share -->
   <script src="//unpkg.com/docsify-share/build/index.min.js"></script>
   <!-- docsify-pagination -->
   <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- KaTeX -->
+  <script src="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
 </body>
 </html>
